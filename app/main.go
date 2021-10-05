@@ -11,9 +11,11 @@ import (
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 func main() {
-	fmt.Println("Your code goes here!")
+	// fmt.Println("Your code goes here!")
 
 	// Uncomment this block to pass the first stage!
+	// fmt.Printf(os.Args)
+	// fmt.Printf("%v\n", os.Args)
 
 	command := os.Args[3]
 	args := os.Args[4:len(os.Args)]
