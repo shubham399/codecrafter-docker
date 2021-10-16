@@ -21,9 +21,9 @@ func main() {
 
 	cmd := exec.Command(command, args...)
 	output, err := cmd.Output()
-	outputDev := os.Stderr
+	outputDev := os.Stdout
 	if err != nil {
-		outputDev = os.Stdout
+		outputDev = os.Stderr
 	}
 	// if err != nil {
 	// 	fmt.Fprintf(os.Stderr, err.Error())
