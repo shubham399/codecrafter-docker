@@ -100,12 +100,12 @@ func main() {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	outStr, errStr := string(stdout.Bytes()), string(stderr.Bytes())
+	fmt.Fprintf(os.Stdout, outStr)
+	fmt.Fprintf(os.Stderr, errStr)
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
 			os.Exit(exitError.ExitCode())
 		}
 	}
-	fmt.Fprintf(os.Stdout, outStr)
-	fmt.Fprintf(os.Stderr, errStr)
 
 }
