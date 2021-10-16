@@ -24,7 +24,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, err.Error())
 		// log.Fatal(err)
 
+	} else {
+		fmt.Print(string(output))
 	}
-
-	fmt.Print(string(output))
 }
