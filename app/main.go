@@ -98,6 +98,10 @@ func main() {
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
+	// https://medium.com/@teddyking/namespaces-in-go-basics-e3f0fc1ff69a
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Cloneflags: syscall.CLONE_NEWPID,
+	}
 	err := cmd.Run()
 	outStr, errStr := string(stdout.Bytes()), string(stderr.Bytes())
 	fmt.Fprintf(os.Stdout, outStr)
