@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 )
@@ -20,17 +22,14 @@ func main() {
 	// fmt.Println(args)
 
 	cmd := exec.Command(command, args...)
-	output, err := cmd.CombinedOutput()
-	outputDev := os.Stdout
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	outStr, errStr := string(stdout.Bytes()), string(stderr.Bytes())
 	if err != nil {
-		outputDev = os.Stderr
-		// output = []byte(err.Error())
+		log.Fatal(err)
 	}
-	// if err != nil {
-	// 	fmt.Fprintf(os.Stderr, err.Error())
-	// 	// log.Fatal(err)
-
-	// } else {
-	fmt.Fprintf(outputDev, string(output))
-	// }
+	fmt.Fprintf(os.Stdout, outStr)
+	fmt.Fprintf(os.Stderr, errStr)
 }
