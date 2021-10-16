@@ -24,6 +24,7 @@ func main() {
 	outputDev := os.Stdout
 	if err != nil {
 		outputDev = os.Stderr
+		output = []byte(err.Error())
 	}
 	// if err != nil {
 	// 	fmt.Fprintf(os.Stderr, err.Error())
