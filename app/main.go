@@ -88,7 +88,7 @@ func main() {
 	// fmt.Println(args)
 	// make the current directory the chroot jail
 	absPath, _ := filepath.Abs("./sandbox")
-	fmt.Println(absPath)
+	// fmt.Println(absPath)
 	// chError := syscall.Chroot(absPath)
 	// if chError != nil {
 	// 	log.Fatal("Chroot Error", chError)
