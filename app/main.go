@@ -20,11 +20,11 @@ func main() {
 	// fmt.Println(args)
 
 	cmd := exec.Command(command, args...)
-	output, err := cmd.Output()
+	output, err := cmd.CombinedOutput()
 	outputDev := os.Stdout
 	if err != nil {
 		outputDev = os.Stderr
-		output = []byte(err.Error())
+		// output = []byte(err.Error())
 	}
 	// if err != nil {
 	// 	fmt.Fprintf(os.Stderr, err.Error())
