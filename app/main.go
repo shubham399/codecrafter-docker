@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
 )
 
 func makeExecutable(path string) {
@@ -87,12 +88,12 @@ func main() {
 	// fmt.Println(command)
 	// fmt.Println(args)
 	// make the current directory the chroot jail
-	// absPath, _ := filepath.Abs("./sandbox")
+	absPath, _ := filepath.Abs("./sandbox")
 	// fmt.Println(absPath)
-	// chError := syscall.Chroot(absPath)
-	// if chError != nil {
-	// 	log.Fatal("Chroot Error", chError)
-	// }
+	chError := syscall.Chroot(absPath)
+	if chError != nil {
+		log.Fatal("Chroot Error", chError)
+	}
 	cmd := exec.Command(command, args...)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
