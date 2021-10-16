@@ -16,15 +16,20 @@ func main() {
 
 	command := os.Args[3]
 	args := os.Args[4:len(os.Args)]
-	// fmt.Print(args)
+	// fmt.Println(command)
+	// fmt.Println(args)
 
 	cmd := exec.Command(command, args...)
 	output, err := cmd.Output()
+	outputDev := os.Stderr
 	if err != nil {
-		fmt.Fprintf(os.Stderr, err.Error())
-		// log.Fatal(err)
-
-	} else {
-		fmt.Print(string(output))
+		outputDev = os.Stdout
 	}
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, err.Error())
+	// 	// log.Fatal(err)
+
+	// } else {
+	fmt.Fprintf(outputDev, string(output))
+	// }
 }
