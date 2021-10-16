@@ -9,7 +9,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"syscall"
 )
 
 func makeExecutable(path string) {
@@ -17,7 +16,7 @@ func makeExecutable(path string) {
 	// change mode
 	err = os.Chmod(path, 0777)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("CHMOD", err)
 	}
 }
 
@@ -25,7 +24,7 @@ func getBinaryPath(binary string) string {
 	cmd := exec.Command("which", binary)
 	output, err := cmd.Output()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("WHICH", err)
 	}
 	return string(output)
 }
@@ -35,20 +34,20 @@ func copyFile(sourceFilePath, destinationFilePath string) {
 	var source *os.File
 	source, err = os.Open(sourceFilePath)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("OPEN", err)
 	}
 	defer source.Close()
 
 	var destination *os.File
 	destination, err = os.Create(destinationFilePath)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("CREATE", err)
 	}
 	defer destination.Close()
 
 	_, err = io.Copy(destination, source)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("COPY", err)
 	}
 }
 
@@ -57,7 +56,7 @@ func initalize(dir string, binary string) {
 	if os.IsNotExist(err) {
 		errDir := os.MkdirAll(dir, 0777)
 		if errDir != nil {
-			log.Fatal(err)
+			log.Fatal("MKDIR", err)
 		}
 	}
 	err = os.MkdirAll(filepath.Join(dir, "/dev/null"), 0777)
@@ -65,15 +64,6 @@ func initalize(dir string, binary string) {
 	abs, err := filepath.Abs(destination)
 	copyFile(strings.TrimSpace(getBinaryPath(binary)), abs)
 	makeExecutable(abs)
-	err = os.Chdir(dir)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// make the current directory the chroot jail
-	err = syscall.Chroot(dir)
-	if err != nil {
-		log.Fatal(err)
-	}
 	return
 }
 
@@ -92,7 +82,13 @@ func main() {
 	initalize(directory, command)
 	// fmt.Println(command)
 	// fmt.Println(args)
-
+	// make the current directory the chroot jail
+	absPath, _ := filepath.Abs("./sandbox")
+	fmt.Println(absPath)
+	// chError := syscall.Chroot(absPath)
+	// if chError != nil {
+	// 	log.Fatal("Chroot Error", chError)
+	// }
 	cmd := exec.Command(command, args...)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
