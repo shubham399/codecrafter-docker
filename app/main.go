@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 )
@@ -28,7 +27,9 @@ func main() {
 	err := cmd.Run()
 	outStr, errStr := string(stdout.Bytes()), string(stderr.Bytes())
 	if err != nil {
-		log.Fatal(err)
+		if exitError, ok := err.(*exec.ExitError); ok {
+			os.Exit(exitError.ExitCode())
+		}
 	}
 	fmt.Fprintf(os.Stdout, outStr)
 	fmt.Fprintf(os.Stderr, errStr)
