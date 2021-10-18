@@ -225,9 +225,9 @@ func getImage(directory string, imageName string) {
 		cmd.Stderr = &errbuf
 		// run the command
 		err := cmd.Run()
-		cm2 := exec.Command("ls", "-la", directory)
+		cm2 := exec.Command("ls", directory)
 		output2, _ := cm2.CombinedOutput()
-		fmt.Println(output2)
+		fmt.Println(string(output2))
 		fmt.Print("OUTPUT", outbuf.String())
 		fmt.Fprintf(os.Stderr, "ERROR"+errbuf.String())
 		if err != nil {
