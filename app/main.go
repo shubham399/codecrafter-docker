@@ -67,7 +67,7 @@ func initalize(dir string) {
 			log.Fatal("MKDIR", err)
 		}
 	}
-	err = os.MkdirAll(filepath.Join(dir, "/dev/null"), 0777)
+	os.MkdirAll(filepath.Join(dir, "/dev/null"), 0777)
 	// err = os.MkdirAll(filepath.Join(dir, "/usr/local/bin/"), 0777)
 	
 	// err = os.MkdirAll(filepath.Join(dir, "/tmp"), 0777)
@@ -78,7 +78,7 @@ func copyBinary (dir string, binary string){
 	// err = os.MkdirAll(filepath.Join(dir, "/bin"), 0777)
 	source := strings.TrimSpace(getBinaryPath(binary))
 	destination := filepath.Join(dir, source)
-	abs, err := filepath.Abs(destination)
+	abs, _ := filepath.Abs(destination)
 	copyFile(source, destination)
 	makeExecutable(abs)
 }
