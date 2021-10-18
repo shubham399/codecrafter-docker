@@ -69,12 +69,12 @@ func initalize(dir string) {
 	}
 	os.MkdirAll(filepath.Join(dir, "/dev/null"), 0777)
 	// err = os.MkdirAll(filepath.Join(dir, "/usr/local/bin/"), 0777)
-	
+
 	// err = os.MkdirAll(filepath.Join(dir, "/tmp"), 0777)
 	return
 }
 
-func copyBinary (dir string, binary string){
+func copyBinary(dir string, binary string) {
 	// err = os.MkdirAll(filepath.Join(dir, "/bin"), 0777)
 	source := strings.TrimSpace(getBinaryPath(binary))
 	destination := filepath.Join(dir, source)
@@ -82,7 +82,6 @@ func copyBinary (dir string, binary string){
 	copyFile(source, destination)
 	makeExecutable(abs)
 }
-
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 func main() {
@@ -99,7 +98,7 @@ func main() {
 	imageName := os.Args[2]
 	os.Remove(directory)
 	initalize(directory)
-	getImage(directory,imageName)
+	getImage(directory, imageName)
 	copyBinary(directory, command)
 	// fmt.Println(command)
 	// fmt.Println(args)
@@ -136,7 +135,7 @@ func main() {
 
 }
 
-func getImage(directory string,imageName string) {
+func getImage(directory string, imageName string) {
 	type AuthResponse struct {
 		Token       string    `json:"token"`
 		AccessToken string    `json:"access_token"`
@@ -225,9 +224,9 @@ func getImage(directory string,imageName string) {
 		cmd.Stdout = &outbuf
 		cmd.Stderr = &errbuf
 		// run the command
-		err := cmd.Run();
-		fmt.Print(outbuf.String())
-		fmt.Fprintf(os.Stderr, errbuf.String())
+		err := cmd.Run()
+		fmt.Print("OUTPUT", outbuf.String())
+		fmt.Fprintf(os.Stderr, "ERROR"+errbuf.String())
 		if err != nil {
 			// if there's an error, print the command's output
 			// and exit with the same error code
@@ -240,7 +239,7 @@ func getImage(directory string,imageName string) {
 			}
 		}
 		// print stdout and stderr
-		fmt.Println("Extract Done")
+		// fmt.Println("Extract Done")
 		os.Remove("./layersFile")
 	}
 }
