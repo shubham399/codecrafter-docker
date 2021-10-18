@@ -225,7 +225,10 @@ func getImage(directory string,imageName string) {
 		cmd.Stdout = &outbuf
 		cmd.Stderr = &errbuf
 		// run the command
-		if err := cmd.Run(); err != nil {
+		err := cmd.Run();
+		fmt.Print(outbuf.String())
+		fmt.Fprintf(os.Stderr, errbuf.String())
+		if err != nil {
 			// if there's an error, print the command's output
 			// and exit with the same error code
 			if exitError, ok := err.(*exec.ExitError); ok {
@@ -237,8 +240,7 @@ func getImage(directory string,imageName string) {
 			}
 		}
 		// print stdout and stderr
-		fmt.Print(outbuf.String())
-		fmt.Fprintf(os.Stderr, errbuf.String())
+		fmt.Println("Extract Done")
 		os.Remove("./layersFile")
 	}
 }
