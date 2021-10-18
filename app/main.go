@@ -201,7 +201,7 @@ func getImage(directory string, imageName string) {
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
-	log.Println(manifest)
+	// log.Println(manifest)
 	// the manifest contains an FsLayers array
 	// with the blobsum hash that points
 	// to the image layer to request
@@ -225,16 +225,16 @@ func getImage(directory string, imageName string) {
 		cmd.Stderr = &errbuf
 		// run the command
 		err := cmd.Run()
-		cm2 := exec.Command("ls", directory)
-		output2, _ := cm2.CombinedOutput()
-		fmt.Println(string(output2))
-		fmt.Print("OUTPUT", outbuf.String())
-		fmt.Fprintf(os.Stderr, "ERROR"+errbuf.String())
+		// cm2 := exec.Command("ls", directory)
+		// output2, _ := cm2.CombinedOutput()
+		// fmt.Println(string(output2))
+		// fmt.Print("OUTPUT", outbuf.String())
+		// fmt.Fprintf(os.Stderr, "ERROR"+errbuf.String())
 		if err != nil {
 			// if there's an error, print the command's output
 			// and exit with the same error code
 			if exitError, ok := err.(*exec.ExitError); ok {
-				// fmt.Print(outbuf.String())
+				fmt.Print(outbuf.String())
 				// this doesn't actually print anything
 				// fmt.Fprintf(os.Stderr, errbuf.String())
 				waitStatus = exitError.Sys().(syscall.WaitStatus)
