@@ -59,7 +59,7 @@ func copyFile(sourceFilePath, destinationFilePath string) {
 	}
 }
 
-func initalize(dir string, binary string) {
+func initalize(dir string) {
 	_, err := os.Stat(dir)
 	if os.IsNotExist(err) {
 		errDir := os.MkdirAll(dir, 0777)
@@ -69,15 +69,20 @@ func initalize(dir string, binary string) {
 	}
 	err = os.MkdirAll(filepath.Join(dir, "/dev/null"), 0777)
 	// err = os.MkdirAll(filepath.Join(dir, "/usr/local/bin/"), 0777)
-	// err = os.MkdirAll(filepath.Join(dir, "/bin"), 0777)
+	
 	// err = os.MkdirAll(filepath.Join(dir, "/tmp"), 0777)
+	return
+}
+
+func copyBinary (dir string, binary string){
+	// err = os.MkdirAll(filepath.Join(dir, "/bin"), 0777)
 	source := strings.TrimSpace(getBinaryPath(binary))
 	destination := filepath.Join(dir, source)
 	abs, err := filepath.Abs(destination)
 	copyFile(source, destination)
 	makeExecutable(abs)
-	return
 }
+
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 func main() {
@@ -93,9 +98,9 @@ func main() {
 	// Fetch an image from the Docker Registry, uncompress it in the local directory
 	imageName := os.Args[2]
 	os.Remove(directory)
-	initalize(directory, command)
-	os.Chdir(directory)
-	getImage(imageName)
+	initalize(directory)
+	getImage(directory,imageName)
+	copyBinary(directory, command)
 	// fmt.Println(command)
 	// fmt.Println(args)
 	// make the current directory the chroot jail
@@ -131,7 +136,7 @@ func main() {
 
 }
 
-func getImage(imageName string) {
+func getImage(directory string,imageName string) {
 	type AuthResponse struct {
 		Token       string    `json:"token"`
 		AccessToken string    `json:"access_token"`
@@ -215,7 +220,7 @@ func getImage(imageName string) {
 
 		var waitStatus syscall.WaitStatus
 
-		cmd := exec.Command("tar", "--extract", "--file", "./layersFile", "-C", "./")
+		cmd := exec.Command("tar", "--extract", "--file", "./layersFile", "-C", directory)
 		var outbuf, errbuf bytes.Buffer
 		cmd.Stdout = &outbuf
 		cmd.Stderr = &errbuf
