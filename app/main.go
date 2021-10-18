@@ -103,12 +103,12 @@ func main() {
 	// fmt.Println(command)
 	// fmt.Println(args)
 	// make the current directory the chroot jail
-	// absPath, _ := filepath.Abs("./sandbox")
-	// // fmt.Println(absPath)
-	// chError := syscall.Chroot(absPath)
-	// if chError != nil {
-	// 	log.Fatal("Chroot Error", chError)
-	// }
+	absPath, _ := filepath.Abs(directory)
+	// fmt.Println(absPath)
+	chError := syscall.Chroot(absPath)
+	if chError != nil {
+		log.Fatal("Chroot Error", chError)
+	}
 	cmd := exec.Command(command, args...)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
@@ -234,7 +234,7 @@ func getImage(directory string, imageName string) {
 			// if there's an error, print the command's output
 			// and exit with the same error code
 			if exitError, ok := err.(*exec.ExitError); ok {
-				fmt.Print(outbuf.String())
+				// fmt.Print(outbuf.String())
 				// this doesn't actually print anything
 				// fmt.Fprintf(os.Stderr, errbuf.String())
 				waitStatus = exitError.Sys().(syscall.WaitStatus)
