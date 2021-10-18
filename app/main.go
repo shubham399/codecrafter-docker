@@ -188,7 +188,7 @@ func getImage(imageName string) {
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
-	log.Println("response " + string([]byte(body)))
+	// log.Println("response " + string([]byte(body)))
 	var manifest ManifestResponse
 	if err := json.Unmarshal(body, &manifest); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
@@ -196,6 +196,7 @@ func getImage(imageName string) {
 	if err != nil {
 		log.Println("Error while reading the response bytes:", err)
 	}
+	log.Println(manifest)
 	// the manifest contains an FsLayers array
 	// with the blobsum hash that points
 	// to the image layer to request
