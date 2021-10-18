@@ -68,9 +68,9 @@ func initalize(dir string, binary string) {
 		}
 	}
 	err = os.MkdirAll(filepath.Join(dir, "/dev/null"), 0777)
-	err = os.MkdirAll(filepath.Join(dir, "/usr/local/bin/"), 0777)
-	err = os.MkdirAll(filepath.Join(dir, "/bin"), 0777)
-	err = os.MkdirAll(filepath.Join(dir, "/tmp"), 0777)
+	// err = os.MkdirAll(filepath.Join(dir, "/usr/local/bin/"), 0777)
+	// err = os.MkdirAll(filepath.Join(dir, "/bin"), 0777)
+	// err = os.MkdirAll(filepath.Join(dir, "/tmp"), 0777)
 	source := strings.TrimSpace(getBinaryPath(binary))
 	destination := filepath.Join(dir, source)
 	abs, err := filepath.Abs(destination)
@@ -94,6 +94,7 @@ func main() {
 	imageName := os.Args[2]
 	os.Remove(directory)
 	initalize(directory, command)
+	os.Chdir(directory)
 	getImage(imageName)
 	// fmt.Println(command)
 	// fmt.Println(args)
@@ -209,7 +210,7 @@ func getImage(imageName string) {
 			log.Println("Error on response.\n[ERROR] -", err)
 		}
 		defer resp.Body.Close()
-		log.Println("BLOB", resp.Body)
+		// log.Println("BLOB", resp.Body)
 		writeToFile(resp.Body, "./layersFile")
 
 		var waitStatus syscall.WaitStatus
