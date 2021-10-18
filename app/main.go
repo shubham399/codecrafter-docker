@@ -104,26 +104,26 @@ func main() {
 	// fmt.Println(command)
 	// fmt.Println(args)
 	// make the current directory the chroot jail
-	absPath, _ := filepath.Abs("./sandbox")
-	// fmt.Println(absPath)
-	chError := syscall.Chroot(absPath)
-	if chError != nil {
-		log.Fatal("Chroot Error", chError)
-	}
+	// absPath, _ := filepath.Abs("./sandbox")
+	// // fmt.Println(absPath)
+	// chError := syscall.Chroot(absPath)
+	// if chError != nil {
+	// 	log.Fatal("Chroot Error", chError)
+	// }
 	cmd := exec.Command(command, args...)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	// https://medium.com/@teddyking/namespaces-in-go-basics-e3f0fc1ff69a
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Cloneflags: syscall.CLONE_NEWNS |
-			syscall.CLONE_NEWUTS |
-			syscall.CLONE_NEWIPC |
-			syscall.CLONE_NEWPID |
-			syscall.CLONE_NEWNET |
-			syscall.CLONE_NEWUSER,
-		// syscall.CLONE_NEWPID,
-	}
+	// cmd.SysProcAttr = &syscall.SysProcAttr{
+	// 	Cloneflags: syscall.CLONE_NEWNS |
+	// 		syscall.CLONE_NEWUTS |
+	// 		syscall.CLONE_NEWIPC |
+	// 		syscall.CLONE_NEWPID |
+	// 		syscall.CLONE_NEWNET |
+	// 		syscall.CLONE_NEWUSER,
+	// 	// syscall.CLONE_NEWPID,
+	// }
 	err := cmd.Run()
 	outStr, errStr := string(stdout.Bytes()), string(stderr.Bytes())
 	fmt.Fprintf(os.Stdout, outStr)
