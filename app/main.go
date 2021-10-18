@@ -209,7 +209,7 @@ func getImage(imageName string) {
 			log.Println("Error on response.\n[ERROR] -", err)
 		}
 		defer resp.Body.Close()
-
+		log.Println("BLOB", resp.Body)
 		writeToFile(resp.Body, "./layersFile")
 
 		var waitStatus syscall.WaitStatus
